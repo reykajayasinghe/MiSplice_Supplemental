@@ -36,24 +36,26 @@ dir_path = os.path.dirname(os.path.realpath(file))
 #A0A075B6I0-1	A0A075B6I0	1	ENSG00000211638	ENST00000390283	ENSP00000374818	1	1	5931	IGLV8-61	22	22098700	22099212		414
 #A0A075B6I1-1	A0A075B6I1	1	ENSG00000211639	ENST00000390284	ENSP00000374819	1	1	5920	IGLV4-60	22	22162199	22162681		362
 
-canonical="/Users/rjayasin/Desktop/OneDrive/Programs/GitHub/MiSplice_Supplemental/ptmcosmos_uniprot_ensembl_id_mappings.2018-10-16.tsv"
+canonical="/Users/rjayasin/Desktop/OneDrive/Programs/GitHub/MiSplice_Supplemental/all_uniprot_ensembl_id_mappings.2018-10-16.tsv"
+
 canontrans=defaultdict(dict)
 canonsize=defaultdict(dict)
 cfile=open(canonical,"r")
 for line in cfile:
-	(uniprot_isoform_id,uniprot_entry_id,is_canonical,ensembl_gene_id,ensembl_tx_id,ensembl_protein_id,tx_row_num,tx_rank,hugo_gene_id,symbol,chromosome,start,end,tsl,tx_length_bp)=line.strip().split('\t')
+	(uniprot_isoform_id,uniprot_entry_id,is_canonical,ensembl_gene_id,ensembl_tx_id,ensembl_protein_id,tx_row_num,tx_rank,hugo_gene_id,symbol,chromosome,start,end,biotype,tsl,tx_length_bp)=line.strip().split('\t')
 	#If gene already has a transcript stored in the dictionary, then check if the current transcript size is larger than the one already stored
-	if symbol in canonsize:
-		current_tx_size=canonsize[symbol]
-		if int(tx_length_bp) > int(current_tx_size):
+	if ((tsl == "1") and (biotype == "protein_coding")):
+		if symbol in canonsize:
+			current_tx_size=canonsize[symbol]
+			if int(tx_length_bp) > int(current_tx_size):
+				canontrans[symbol]=ensembl_tx_id
+				canonsize[symbol]=tx_length_bp
+			else:
+				continue
+		#If no transcript current stored for gene of interest then add it
+		else:
 			canontrans[symbol]=ensembl_tx_id
 			canonsize[symbol]=tx_length_bp
-		else:
-			continue
-	#If no transcript current stored for gene of interest then add it
-	else:
-		canontrans[symbol]=ensembl_tx_id
-		canonsize[symbol]=tx_length_bp
 cfile.close()
 
 

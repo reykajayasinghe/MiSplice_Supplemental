@@ -30,16 +30,32 @@ file=sys.argv[1]
 dir_path = os.path.dirname(os.path.realpath(file))
 
 #Load canonical transcripts for each gene
-#ZYX:ENST00000322764
-#ZZEF1:ENST00000381638
-#ZZZ3:ENST00000370801
-canonical="/Users/rjayasin/Desktop/OneDrive/Programs/GitHub/MiSplice_Supplemental/E75_bed_v3_canonical_transcripts.tsv"
+#File below derived from uniprot_isoform_ids and contains all transcripts for all genes. 
+#uniprot_isoform_id	uniprot_entry_id	is_canonical	ensembl_gene_id	ensembl_tx_id	ensembl_protein_id	tx_row_num	tx_rank	hugo_gene_id	symbol	chromosome	start	end	tsl	tx_length_bp
+#A0A075B6H9-1	A0A075B6H9	1	ENSG00000211637	ENST00000390282	ENSP00000374817	1	1	5921	IGLV4-69	22	22030934	22031472		419
+#A0A075B6I0-1	A0A075B6I0	1	ENSG00000211638	ENST00000390283	ENSP00000374818	1	1	5931	IGLV8-61	22	22098700	22099212		414
+#A0A075B6I1-1	A0A075B6I1	1	ENSG00000211639	ENST00000390284	ENSP00000374819	1	1	5920	IGLV4-60	22	22162199	22162681		362
+
+canonical="/Users/rjayasin/Desktop/OneDrive/Programs/GitHub/MiSplice_Supplemental/ptmcosmos_uniprot_ensembl_id_mappings.2018-10-16.tsv"
 canontrans=defaultdict(dict)
+canonsize=defaultdict(dict)
 cfile=open(canonical,"r")
 for line in cfile:
-	(gene,trans)=line.strip().split(':')
-	canontrans[gene]=trans
+	(uniprot_isoform_id,uniprot_entry_id,is_canonical,ensembl_gene_id,ensembl_tx_id,ensembl_protein_id,tx_row_num,tx_rank,hugo_gene_id,symbol,chromosome,start,end,tsl,tx_length_bp)=line.strip().split('\t')
+	#If gene already has a transcript stored in the dictionary, then check if the current transcript size is larger than the one already stored
+	if symbol in canonsize:
+		current_tx_size=canonsize[symbol]
+		if int(tx_length_bp) > int(current_tx_size):
+			canontrans[symbol]=ensembl_tx_id
+			canonsize[symbol]=tx_length_bp
+		else:
+			continue
+	#If no transcript current stored for gene of interest then add it
+	else:
+		canontrans[symbol]=ensembl_tx_id
+		canonsize[symbol]=tx_length_bp
 cfile.close()
+
 
 ofile=file+".transvar"
 output=open(ofile,"w")

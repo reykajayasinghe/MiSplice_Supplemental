@@ -1,5 +1,5 @@
 #Reyka Jayasinghe (reyka@wustl.edu)
-#Last edited: October 11th, 2018
+#Last edited: October 15th, 2018
 #This script takes in an intermediate output of misplice and does the following:
 #1) Filter out specific genes
 #2) Combines samples that have the same mutation in the same cancer type into one line entry (https://github.com/ding-lab/misplice)
@@ -11,7 +11,6 @@
 
 #Example file input data
 #high_expression  brca	TCGA-TT_T  HLA-A   6_29912108_G_C  304	 0,0,6,0,0,4335,0,0,3847,0,1732,2,0,0,0,0,0,6,0,0,0,1018,2236,0,2,16,0,0,4,1,0,0,1
-#TCGA-PK-A5H8_19_53116969_G_A	TCGA-PK-A5H8	19	53116969	G	A	3ss	-	53116956	AATCCACACTGGAGAGAAACCTT	AATCCATACTGGAGAGAAACCTT	-22.36	-22.57	207	TCGA-PK-A5H8_19_53116969_G_A	high_expression	acc	TCGA-PK-A5H8_T	ZNF83	19_53116969_G_A	8	0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #TCGA-OR-XXXX_8_143958154_G_A	6.65107	TCGA-OR-XXXX_8_143958154_G_A	TCGA-OR-XXXX	8	143958154	G	A	3ss	-	143958144	CTCGCTGGACCAGCCCCAAGGTG	CTCGCTGGATCAGCCCCAAGGTG	-3.93	-2.45	6841	TCGA-OR-XXXX_8_143958154_G_A	high_expression	acc	TCGA-OR-XXXX_T	CYP11B1	8_143958154_G_A	455	0,0,8,0,23,56,0,0,0,0,0,3,0,3,3,0,0,0,0,3,0,0,6,202,60,0,0,2,0,0,19,6,13,0,0,0,3,0,0,109,17,7,0,0,4,0,0,0,16,10,77,0,0,0,0,0,14,0,12,33,0,0,0,33,0,0,14,13,0,0,0,11,0,5,40,24,0,5
 
 
@@ -153,7 +152,7 @@ output2 = open(out2,'w')
 header="Key\tFraction_of_Controls_with_Event\tGene\tMutation\tTotal_Mutations\tSample_List\tTotal_Samples\tCancer\tCase_Reads\tTotal_Case_Depth\tJAF\tType_Splice_Site\tStrand\tSCM_Genomic_Position\tBefore_Mutation_Context\tAfter_Mutation_Context\tBefore_Score\tAfter_Score\tControl_Reads\n"
 #OUTPUT
 #Key	Fraction_of_Controls_with_Event	Gene	Mutation	Total_Mutations	Sample_List	Total_Samples	Cancer	Case_Reads	Control_Reads
-#EIF2AK1_['TCGA-4Z-AA7R_T']	0.0	EIF2AK1	7_6094337_T_C	1	TCGA-4Z-AA7R	1	BLCA	83	231	35.9307	3ss	-	6094318	AGAATCTGATGTTCCAGCAGAAA	GGAATCTGATGTTCCAGCAGAAA	3.86	3.53		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+#EIF2AK1_['TCGA-XX_T']	0.0	EIF2AK1	7_6094337_T_C	1	TCGA-XX	1	BLCA	83	231	35.9307	3ss	-	6094318	AGAATCTGATGTTCCAGCAGAAA	GGAATCTGATGTTCCAGCAGAAA	3.86	3.53		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 output.write(header)
 
 for key,value in mutations.items():
@@ -208,13 +207,6 @@ output.close()
 output2.close()
 
 print("Completed, check final output CANCER.rgSCM.filtered")
-
-######################################################
-########ADD BACK IN MUTATION ANNOTATION INFO##########
-######################################################
-#Use TransVar to annotate all variants.http://bioinformatics.mdanderson.org/main/Transvar
-
-##MAF info was lost in these samples, add back in for this final list.
 
 
 #Cleanup

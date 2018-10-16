@@ -4,7 +4,7 @@
 Reyka Jayasinghe (reyka@wustl.edu)
 Last Edit: October 15th, 2018
 
-### Final_Filtering.py
+### Final Filtering
 This script takes in an intermediate output of misplice(https://github.com/ding-lab/misplice) and does the following:
 1) Filter out subset of genes
 2) Combines samples that have the same mutation in the same cancer type into one line entry

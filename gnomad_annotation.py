@@ -46,6 +46,11 @@ OUT=open(f,"w")
 
 for line in MUT:
 	(chromosome,position,refallele,altallele) = line.strip().split('\t')
+#Skip all indels
+	if len(refallele) > 1:
+		continue
+	if len(altallele) > 1:
+		continue
 	key = chromosome+"."+position+"."+refallele+"."+altallele
 	mutations[chromosome].append(key)
 MUT.close()
@@ -83,12 +88,12 @@ for chrom,sites in mutations.items():
 						if entry.startswith("AF_POPMAX"):
 							AF_POPMAX=entry
 							popmax=AF_POPMAX.split('=')
-							frequency=(float(popmax[1])*100)	
+#							frequency=(float(popmax[1])*100)	
 						if entry.startswith("AF_FilterStatus"):
 							AS_FilterStatus=entry
 						
-					thing=(vcf_key,frequency,AF_POPMAX,AF_AFR,AF_AMR,AF_ASJ,AF_EAS,AF_FIN,AF_NFE,AF_OTH)
-					OUT.write('\t'.join(thing))
+					thing=vcf_key+"\t"+AF_POPMAX+"\t"+AF_AFR+"\t"+AF_AMR+"\t"+AF_ASJ+"\t"+AF_EAS+"\t"+AF_FIN+"\t"+AF_NFE+"\t"+AF_OTH+"\n"
+					OUT.write(thing)
 				else:
 					continue
 	fin.close()

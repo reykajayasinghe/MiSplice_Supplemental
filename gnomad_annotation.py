@@ -1,5 +1,7 @@
 #Reyka Jayasinghe (reyka@wustl.edu)
 #Edited: October 16th, 2018
+#Usage: python gnomad_annotation.py mutationfile
+#Note: Only works for snps, if indels are in mutation file it will throw an error
 
 #To download gnomad data
 #http://gnomad.broadinstitute.org/downloads
@@ -14,6 +16,20 @@
 ##INFO=<ID=AF_FIN,Number=A,Type=Float,Description="Allele Frequency among Finnish genotypes, for each ALT allele, in the same order as listed">
 ##INFO=<ID=AF_NFE,Number=A,Type=Float,Description="Allele Frequency among Non-Finnish European genotypes, for each ALT allele, in the same order as listed
 ##INFO=<ID=AF_OTH,Number=A,Type=Float,Description="Allele Frequency among Other (population not assigned) genotypes, for each ALT allele, in the same orde
+
+#Example INPUT file
+#mutationfile (make sure this has unique mutations)
+#1	100382185	G	A
+#1	100741158	G	A
+#1	104166597	G	A
+
+
+#Example OUTPUT
+#mutationfile.gnomad
+#1.909222.G.A    AF_POPMAX=6.33173e-02   AF_AFR=6.33173e-02      AF_AMR=2.38663e-03      AF_ASJ=0.00000e+00      AF_EAS=0.00000e+00      AF_FIN=0.00000e+00      AF_NFE=6.69344e-05      AF_OTH=1.02041e-03
+#1.909253.C.T    AF_POPMAX=2.67523e-04   AF_AFR=0.00000e+00      AF_AMR=0.00000e+00      AF_ASJ=0.00000e+00      AF_EAS=0.00000e+00      AF_FIN=0.00000e+00      AF_NFE=2.67523e-04      AF_OTH=0.00000e+00
+#1.985359.C.T    AF_POPMAX=3.81503e-03   AF_AFR=3.81503e-03      AF_AMR=1.19332e-03      AF_ASJ=0.00000e+00      AF_EAS=0.00000e+00      AF_FIN=0.00000e+00      AF_NFE=0.00000e+00      AF_OTH=0.00000e+00
+
 
 #Import necessary packages
 from collections import defaultdict
@@ -37,7 +53,6 @@ file=sys.argv[1]
 MUT=open(file,"r")
 f=file+".gnomad"
 OUT=open(f,"w")
-#MUT=open("/gscmnt/gc2509/dinglab/reyka/splice_project/germline_scm/gnomad_filter/germline_rgscm.uniq")
 #Store all chromosome,position,ref,alt allele information in dictionary by chromosome
 #Example Key value pair:
 #(Key,:,Values (list format))

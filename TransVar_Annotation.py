@@ -23,6 +23,8 @@ import os
 from collections import defaultdict
 import subprocess
 import re
+import time
+start = time.time()
 
 file=sys.argv[1]
 
@@ -124,6 +126,7 @@ for line in pfile:
 						mutclassification=CSQN[0]	
 						fincanon=",".join(data)
 						canonicaldata.append(fincanon)
+					#If canonical transcript is not specified then take first transcript if it is specified as (protein_coding) after transcript name
 					else:
 						#replace tabs in entry with commas
 						alt=alltranscripts[i].split('\t')
@@ -134,10 +137,21 @@ for line in pfile:
 			#Combine all alt transcripts into one variable
 			try:
 				finalcanon=canonicaldata[0]
+				note = "longest"
 			except IndexError:
-				finalcanon="Not Reported"
+				note="other"
+				firsttranscript=othertranscriptdata[0]
+				dataother=firsttranscript.split(',')
+				#check to see if transcirpt is (protein_coding)
+				currenttrans=dataother[1].split(' ')
+				if currenttrans[1] == "(protein_coding)":
+					CSQNother=dataother[6].split(';')
+					mutclassification=CSQNother[0]
+					finalcanon=",".join(dataother) #extract first transcript info for reporting
+				else:
+					note="Not Reported"
 			allalttranscripts="|".join(othertranscriptdata)
-			annotated=line.strip()+"\t"+mutclassification+"\t"+finalcanon+"\t"+allalttranscripts+"\n"
+			annotated=line.strip()+"\t"+note+"\t"+mutclassification+"\t"+finalcanon+"\t"+allalttranscripts+"\n"
 			output.write(annotated)
 		
 		else:
@@ -147,3 +161,6 @@ for line in pfile:
 output.close()
 pfile.close()
 errorout.close()
+
+end = time.time()
+print(end - start)

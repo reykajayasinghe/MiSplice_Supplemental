@@ -111,6 +111,7 @@ for line in pfile:
 			canonicaldata=[]
 			othertranscriptdata=[]
 			mutclassification=""
+			finalcanon=""
 			#Extract the canonical transcript info and concatenate all other transcript info into one entry
 			for i in range(len(alltranscripts)):
 				if i == 0: #skip header
